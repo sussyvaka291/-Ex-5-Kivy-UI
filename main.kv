@@ -2,35 +2,145 @@
     #: import time __main__.time
 
     name: 'main'
+    on_enter:root.start_joy_thread()
+    test_button: test_button
+    among_us: among_us
+    button_cheese: button_cheese
+    x_axis_button: x_axis_button
+    y_axis_button: y_axis_button
+    liz_is_h8r: liz_is_h8r
+
     FloatLayout:
         size_hint: None, None
 
     DPEAButton:
         id: test_button
-        text: 'baka'
-        size: 100, 100
-        x: root.width * 0.75
-        y: root.height * 0.5
-        color: 0, 1, 0, 1
-        on_press: root.pressed()
+        text: '0'
+        size: 200, 200
+        x: root.width * 0.8
+        y: root.height * 0.8
+        color: .3, .8, .2, 1
+        on_press: root.btn()
+
+    ImageButton:
+        id: image_button
+        text: "no"
+        size: 200, 200
+        x: root.width * 0.45
+        y: root.height * 0.8
+        source: 'me.jpeg'
+        on_press: root.cheese()
+
+    ImageButton:
+        id: cheese_button
+        size: 200, 200
+        x: root.width * 0.2
+        y: root.height * 0.75
+        source: 'me.jpeg'
+        on_release: root.animate_it(self)
+
+    DPEAButton:
+        id: label_button
+        text: 'Baka'
+        size: 200, 200
+        x: root.width * 0.05
+        y: root.height * 0.6
+        color: 0, 3, 0, 1
+        on_press: root.sus()
+
 
     DPEAButton:
         text: "test2"
-        size: 100, 100
-        x: root.width * 0.25
-        y: root.height * 0.5
+        size: 200, 200
+        x: root.width * 0.05
+        y: root.height * 0.8
         color: 1, 0, 0, 1
         on_press: root.pressed()
 
-    SelfUpdatingLabel:
-        id: time_label
+    DPEAButton:
+        id: btn
+        text: 'On' if btn.state == "normal" else "Off"
+        size: 200, 200
+        x: root.width * 0.8
+        y: root.height * 0.6
+        color: 0, .3, 0, 1
+        on_press: root.pressed()
+
+
+    Label:
+        id: among_us
         size_hint: None, None
-        font_size: 30
-        update_property: time.now
-        update_property_parameters: None
+        text: "Sus"
+        font_size: 35
         center_x: root.width * 0.5
-        center_y: root.height * 0.45
+        center_y: root.height * 0.20
         color: 1, 1, 1, 1
         bold: True
         outline_width: self.font_size * 0.1
         outline_color: 0, 0, 0
+
+    Label:
+        id: liz_is_h8r
+        size_hint: None, None
+        text: "0"
+        font_size: 35
+        center_x: root.width * 0.3
+        center_y: root.height * 0.20
+        color: 1, 1, 1, 1
+        bold: True
+        outline_width: self.font_size * 0.1
+        outline_color: 0, 0, 0
+
+    Label:
+        id: x_axis_button
+        size_hint: None, None
+        text: "0"
+        font_size: 35
+        center_x: root.width * 0.25
+        center_y: root.height * 0.35
+        color: 1, 1, 1, 1
+        bold: True
+        outline_width: self.font_size * 0.1
+        outline_color: 0, 0, .5
+
+    Label:
+        id: y_axis_button
+        size_hint: None, None
+        text: "0"
+        font_size: 35
+        center_x: root.width * 0.7
+        center_y: root.height * 0.35
+        color: 1, 1, 1, 1
+        bold: True
+        outline_width: self.font_size * 0.1
+        outline_color: 0, 0, .5
+
+    Label:
+        id: button_cheese
+        text: "0"
+        size_hint: None, None
+        font_size: 35
+        center_x: root.width * 0.7
+        center_y: root.height * 0.2
+        color: 1, 1, 1, 1
+        bold: True
+        outline_width: self.font_size * 0.1
+        outline_color: 0, 0, 0
+
+
+    Slider:
+        id: slider
+        size_hint: 1, .2
+        min: 0
+        max: 100
+        step: 1
+        orientation: 'horizontal'
+        outline_color: 0, .2, 0, 5
+        bold: True
+
+    Label:
+        text: str(slider.value)
+        color: 0, .3, 0, 5
+        font_size: 34
+        center_x: root.width * 0.1
+        center_y: root.height * 0.01

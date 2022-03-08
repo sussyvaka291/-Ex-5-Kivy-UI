@@ -1,7 +1,7 @@
 import os
 
-#os.environ['DISPLAY'] = ":0.0"
-#os.environ['KIVY_WINDOW'] = 'egl_rpi'
+os.environ['DISPLAY'] = ":0.0"
+os.environ['KIVY_WINDOW'] = 'egl_rpi'
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -14,8 +14,15 @@ from pidev.kivy.PauseScreen import PauseScreen
 from pidev.kivy import DPEAButton
 from pidev.kivy import ImageButton
 from pidev.kivy.selfupdatinglabel import SelfUpdatingLabel
+from kivy.properties import ObjectProperty
+from kivy.animation import Animation
 
 from datetime import datetime
+from kivy.uix.widget import Widget
+from pidev.Joystick import Joystick
+joy = Joystick(0, False)
+from threading import Thread
+from time import sleep
 
 time = datetime
 
@@ -43,11 +50,27 @@ class ProjectNameGUI(App):
 Window.clearcolor = (1, 1, 1, 1)  # White
 
 
+
 class MainScreen(Screen):
+    among_us = ObjectProperty(None)
     """
     Class to handle the main screen and its associated touch events
     """
+    count = 1
+    baka = 0
 
+    def joy_update(self):
+        while True:
+            self.button_cheese.text = str(joy.get_button_state(9))
+            sleep(.1)
+            text = self.button_cheese.text
+            self.liz_is_h8r.text = str(joy.button_combo_check([0,1]))
+            self.x_axis_button.text = str(joy.get_axis("x"))
+            self.y_axis_button.text = str(joy.get_axis("y"))
+
+
+    def start_joy_thread(self):
+        Thread(target=self.joy_update, daemon=True).start()
     def pressed(self):
         """
         Function called on button touch event for button with id: testButton
@@ -55,6 +78,32 @@ class MainScreen(Screen):
         """
         print("Callback from MainScreen.pressed()")
 
+    def btn(self):
+        self.test_button.text = str(self.count)
+        self.count += 1
+
+    def sus(self):
+        if self.among_us.text == "Sus":
+          self.among_us.text = "Imposter"
+        else:
+            self.among_us.text = "Sus"
+
+    def button_combo_check(self):
+        if joy.button_combo_check([0,1]):
+            self.liz_is_h8r.text= "1"
+            self.refresh()
+
+    def cheese(self):
+        SCREEN_MANAGER.current = 'passCode'
+
+    def animate_it(self, widget):
+        self.baka += 1
+        self.cheese_button = str(self.count)
+        if self.baka < 2:
+            anim = Animation(x=50) + Animation(size=(80, 80), duration=2.)
+            anim.start(widget)
+        else:
+            SCREEN_MANAGER.current = 'passCode'
     def admin_action(self):
         """
         Hidden admin button touch event. Transitions to passCodeScreen.
